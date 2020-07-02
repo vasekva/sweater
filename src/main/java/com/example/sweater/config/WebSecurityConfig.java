@@ -10,14 +10,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 
-@Configuration
-@EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
+@Configuration //Файл конфигурации SpringSecurity
+@EnableWebSecurity //Включить и сконфигурировать Web Security
+@EnableGlobalMethodSecurity(prePostEnabled = true) //Включить ограниченный доступ к методам (контроллерам)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
+    @Autowired //Автосвязывание клссса-конфигурации доступа с сервисом пользователей
     private UserService userService;
 
-    @Override
+    @Override //Переопределение метода конфигурации доступа к ресурсам
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
@@ -30,9 +30,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .logout()
                     .permitAll();
+        //Включить авторизацию
+        //К корневому адресу (/), форме регистрации (/registration) и дериктории статики разрешен полный доступ
+        //Для всех остальных запросов требуется авторизация
+        //Включаем login
+        //По адресу /login разрешаем доступ для всех
+        //Включаем logout
+        //По адресу /logout разрешаем доступ для всех
+
     }
 
-    @Override
+    @Override //Переопределение метода концигурации аутентификации и работы с БД
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService)
                 .passwordEncoder(NoOpPasswordEncoder.getInstance());

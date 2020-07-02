@@ -1,6 +1,7 @@
-<#import "parts/common.ftlh" as c>
+<!-- Шаблон страницы приветсвия -->
+<#import "layouts/default.ftlh" as layout> <!-- Подключение базового шаблона -->
 
-<@c.page>
-    <div>Hello, user</div>
-    <a href="/main">Main page</a>
-</@c.page>
+<@layout.page currentPage="greeting">
+    <h5>Hello, guest</h5>
+    <div>This is a simple clone off Twitter</div>
+</@layout.page>

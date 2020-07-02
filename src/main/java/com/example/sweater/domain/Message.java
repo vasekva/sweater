@@ -2,7 +2,8 @@ package com.example.sweater.domain;
 
 import javax.persistence.*;
 
-@Entity
+//Хранит сообщения пользователей
+@Entity  //Класс-сущность базы данных (Может хранить строку из таблицы)
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -10,13 +11,15 @@ public class Message {
 
     private String text;
     private String tag;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User author;
-
     private String filename;
 
+    //Мэппинг поля автора сообщения (связь двух таблиц)
+    //Связь, при которой одному пользователю соответствует множество сообщений (связь между таблицами)
+    @ManyToOne(fetch = FetchType.EAGER) //Жадная загрузка
+    @JoinColumn(name = "user_id") //В таблице messages создается поле usr_id для связи
+    private User author;
+
+    //Конструкторы
     public Message() {
     }
 
@@ -26,47 +29,40 @@ public class Message {
         this.tag = tag;
     }
 
-    public String getFilename() {
-        return filename;
-    }
-
-    public void setFilename(String filename) {
-        this.filename = filename;
-    }
-
     public String getAuthorName() {
         return author != null ? author.getUsername() : "<none>";
-    }
-
-    public User getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(User author) {
-        this.author = author;
     }
 
     public Integer getId() {
         return id;
     }
+    public String getText() {
+        return text;
+    }
+    public String getTag() {
+        return tag;
+    }
+    public User getAuthor() {
+        return author;
+    }
+    public String getFilename() {
+        return filename;
+    }
+
 
     public void setId(Integer id) {
         this.id = id;
     }
-
-    public String getText() {
-        return text;
-    }
-
     public void setText(String text) {
         this.text = text;
     }
-
-    public String getTag() {
-        return tag;
-    }
-
     public void setTag(String tag) {
         this.tag = tag;
+    }
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+    public void setAuthor(User author) {
+        this.author = author;
     }
 }

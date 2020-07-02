@@ -1,8 +1,8 @@
-<#import "parts/common.ftlh" as c>
-<#import "parts/login.ftlh" as l>
+<#import "layouts/default.ftlh" as layout> <!-- Подключение базового шаблона -->
+<#import "parts/login.ftlh" as l> <!-- Подключение шаблона формы логина -->
 
-<@c.page>
-    Add new user
+<@layout.page currentPage="none">
+    <div class="mb-1">Add new user</div>
     ${message?ifExists}
-    <@l.login "/registration" />
-</@c.page>
+    <@l.login "/registration" true/>
+</@layout.page>

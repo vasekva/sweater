@@ -1,8 +1,7 @@
-<#import "parts/common.ftlh" as c>
+<#import "layouts/default.ftlh" as layout>
 <#import "parts/login.ftlh" as l>
 
-<@c.page>
-    Login page
-    <@l.login "/login" />
-    <a href="/registration">Add new user</a>
-</@c.page>
+<@layout.page currentPage="none">
+    <h2>Вход в аккаунт</h2>
+    <@l.login "/login" false/>
+</@layout.page>

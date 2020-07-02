@@ -11,30 +11,34 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.util.Collections;
 import java.util.Map;
 
-@Controller
+//Контроллер регистрации
+@Controller //Класс-контроллер обрабатывает HTTP-запросы
 public class RegistrationController {
-    @Autowired
-    private UserRepo userRepo;
+    @Autowired //Автосвязывание
+    private UserRepo userRepo; //Репозиторий для работы с профилями пользователей
 
-    @GetMapping("/registration")
+    @GetMapping("/registration") //Обработка GET запросов на адрес /registration вызовом метода registration()
     public String registration() {
 
-        return "registration";
+        return "registration"; //Возвращает имя View (веб-страницы)
     }
 
-    @PostMapping("/registration")
+    @PostMapping("/registration") //Обработка POST запроса на /registration
     public String addUser(User user, Map<String, Object> model) {
-        User userFromDb = userRepo.findByUsername(user.getUsername());
+        //Проверки на существование пользователя с такими данными
+        User userFromDb = userRepo.findByUsername(user.getUsername()); //Поиск такого username в базе
 
         if (userFromDb != null) {
+            //Username занят
             model.put("message", "User exists!");
-            return "registration";
+            return "registration"; //обновление страницы
         }
 
-        user.setActive(true);
-        user.setRoles(Collections.singleton(Role.USER));
+        //Username не занят
+        user.setActive(true); //Активация пользователя
+        user.setRoles(Collections.singleton(Role.USER)); //Добавление роли "Пользователь"
         userRepo.save(user);
 
-        return "redirect:/login";
+        return "redirect:/login"; //Редирект на страницу авторизации
     }
 }

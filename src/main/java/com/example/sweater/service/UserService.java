@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService implements UserDetailsService {
-    @Autowired
+    @Autowired //Автосвязывание сервиса и репозитория доступа к профилям пользоввателей
     private UserRepo userRepo;
 
-    @Override
+    @Override //Переопределение метода возврата профиля пользователя по username
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepo.findByUsername(username);
     }

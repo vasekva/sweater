@@ -1,38 +1,57 @@
-<#import "parts/common.ftlh" as c>
-<#import "parts/login.ftlh" as l>
+<#import "layouts/default.ftlh" as base>
 
-<@c.page>
-    <div>
-        <@l.logout />
-        <span><a href="/user">User List</a></span>
-    </div>
-    <div>
-        <form method="post" enctype="multipart/form-data">
-            <input type="text" name="text" placeholder="Введите сообщение" />
-            <input type="text" name="tag" placeholder="Тэг">
-            <input type="file" name="file">
-            <input type="hidden" name="_csrf" value="${_csrf.token}" />
-            <button type="submit">Добавить</button>
-        </form>
-    </div>
-    <div>Список сообщений</div>
-    <form method="get" action="/main">
-        <input type="text" name="filter" value="${filter?ifExists}">
-        <button type="submit">Найти</button>
-    </form>
-    <#list messages as message>
-        <div>
-            <b>${message.id}</b>
-            <span>${message.text}</span>
-            <i>${message.tag}</i>
-            <strong>${message.authorName}</strong>
-            <div>
-                <#if message.filename??>
-                    <img src="/img/${message.filename}"/>
-                </#if>
+<@base.page currentPage="main">
+    <#--  Блок создания нового сообщения  -->
+    <form method="post" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-8">
+                <textarea class="form-control h-100" name="text" id="messageArea" required wrap="soft" placeholder="Введите ваше сообщение здесь.."></textarea>
+            </div>
+            <div class="col-4">
+                <input class="form-control" type="text" name="tag" placeholder="Хэштэг">
+                <div class="custom-file mt-1">
+                    <input type="file" accept="image/*" class="custom-file-input" name="file" id="customFile">
+                    <label class="custom-file-label" for="customFile">Выберите изображение</label>
+                </div>
+                <input class="form-control mt-1" type="hidden" name="_csrf" value="${_csrf.token}" />
+                <button type="submit" class="btn btn-primary mt-4 float-right">Отправить</button>
             </div>
         </div>
-    <#else>
-        No message
-    </#list>
-</@c.page>
+    </form>
+
+
+    <#--  Заголовок с количеством сообщений и поиск сообщения по тэгу  -->
+    <div class="row justify-content-between mb-5 mt-3">
+        <div class="col-7">
+            <h2 class="mb-n1">Лента сообщений <span class="badge badge-primary">${messages?size}</span></h2>
+        </div>
+        <div class="col-5">
+            <form method="get" class="form-inline float-right" action="/main" >
+                <input type="text" class="form-control" name="filter" value="${filter?ifExists}" placeholder="Поиск по тэгу">
+                <button type="submit" class="btn btn-primary ml-2">Поиск</button>
+            </form>
+        </div>
+    </div>
+
+    <#-- Список сообщений -->
+    <div class="card-columns">
+        <#list messages as message>
+            <div class="card my-3">
+                <#if message.filename??>
+                    <img src="/img/${message.filename}" class="card-img-top">
+                </#if>
+
+                <div class="card-body">
+                    <p>${message.text}</p>
+                </div>
+
+                <div class="card-footer">
+                    <b>Tag: </b> ${message.authorName}
+                    <b class="float-right">${message.authorName}</b>
+                </div>
+            </div>
+        <#else>
+            No message
+        </#list>
+    </div>
+</@base.page>
